@@ -18,25 +18,24 @@ const userSchema = new Schema(
     },
     phoneNumber: {
       type: String,
-      required: true,
-      trim: true,
+      required: false,
     },
     address: {
       street: {
         type: String,
-        required: true,
+        required: false,
       },
       city: {
         type: String,
-        required: true,
+        required: false,
       },
       state: {
         type: String,
-        required: true,
+        required: false,
       },
       zipCode: {
         type: String,
-        required: true,
+        required: false,
       },
     },
   },

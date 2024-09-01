@@ -1,6 +1,5 @@
 import Auth from "../models/authModel/auth.js";
 
-
 export const signUpUser = async (req, res) => {
   const { firebaseId, name, email, phoneNumber, address } = req.body;
 
@@ -19,7 +18,9 @@ export const signUpUser = async (req, res) => {
     });
 
     await newUser.save();
-    res.status(201).json({ message: "User signed up successfully", user: newUser });
+    res
+      .status(201)
+      .json({ message: "User signed up successfully", user: newUser });
   } catch (error) {
     console.error("Error signing up user:", error);
     res.status(500).json({ message: "Server error", error });
@@ -28,25 +29,24 @@ export const signUpUser = async (req, res) => {
 
 export const getAllSignUpUsers = async (req, res) => {
   try {
-    const users = await Auth.find({}).sort({createdAt: -1}).exec();
-    res.status(200).json({message: 'Users retrieved successfully', users});
+    const users = await Auth.find({}).sort({ createdAt: -1 }).exec();
+    res.status(200).json({ message: "Users retrieved successfully", users });
   } catch (error) {
-    res.status(500).json({message: 'Server error', error: error.message});
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-
 export const getSignUpUsers = async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
 
   try {
-    const user = await Auth.find({firebaseId:id});
+    const user = await Auth.findOne({ firebaseId: id });
 
     if (!user) {
-      return res.status(404).json({message: 'User not found'});
+      return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({message: 'User retrieved successfully', user});
+    res.status(200).json({ message: "User retrieved successfully", user });
   } catch (error) {
-    res.status(500).json({message: 'Server error', error: error.message});
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
