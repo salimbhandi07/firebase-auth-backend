@@ -50,3 +50,30 @@ export const getSignUpUsers = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+
+export const updateProfile = async (req, res) => {
+  const { firebaseId } = req.params; 
+  const { name, phoneNumber, address } = req.body;
+
+  if (!firebaseId) {
+    return res.status(400).json({ message: "Firebase ID is required." });
+  }
+
+  try {
+    const user = await Auth.findOne({ firebaseId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+    user.name = name || user.name;
+    user.phoneNumber = phoneNumber || user.phoneNumber;
+    user.address = address || user.address;
+    const updatedUser = await user.save();
+
+    res.status(200).json({ message: "User updated successfully", user: updatedUser });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Server error", error });
+  }
+};
